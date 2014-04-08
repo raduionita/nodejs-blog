@@ -1,12 +1,27 @@
 
-exports.index = function(req, res) {
-  res.send('Articles::index');
+exports.index = function(db) {
+  console.log('Articles::index');
+  return function(req, res) {
+    var articles = db.get('articles');
+    articles.find({}, {}, function(err, data) {
+      console.log(err);
+      res.render('articles', {
+        'articles': data
+      });
+    });
+  };
 };
 
-exports.view = function(req, res) {
-  res.send('Articles::view');
-  res.render('article', {
-    title: 'Title of article',
-    body : 'Body from db'
-  });
+exports.view = function(db) {
+  console.log('Articles::view');
+  return function(req, res) {
+    var key = req.params.key;
+    var articles = db.get('articles');
+    articles.findOne({key: key}, {}, function(err, data) {
+      console.log(err);
+      res.render('article', {
+        'article' : data
+      });
+    });
+  };
 };

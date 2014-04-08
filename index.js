@@ -1,13 +1,18 @@
 var express = require('express');
 var routes  = require('./routes');
-var user    = require('./routes/user');
+var users    = require('./routes/users');
+var articles = require('./routes/articles');
 var http    = require('http');
 var path    = require('path');
 var app     = express();
 
 
+var mongo = require('mongodb');
+var monk  = require('monk');
+var db    = monk('localhost:27017/blog');
+
 // all environments
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 5002);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(express.favicon());
@@ -25,8 +30,8 @@ if ('development' == app.get('env')) { app.use(express.errorHandler()); }
 
 app.get('/', routes.index);
 app.get('/users', users.index);
-app.get('/acticle'. articles.index);
-app.get('/acticle/:article'. articles.view);
+app.get('/articles', articles.index(db));
+app.get('/articles/:key', articles.view(db));
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
