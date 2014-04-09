@@ -1,0 +1,9 @@
+extends layout
+
+block body
+  h1= ucfirst(module)
+  
+  div
+    a(href="/admin/articles#add") Add article
+  
+  div(ng-view)

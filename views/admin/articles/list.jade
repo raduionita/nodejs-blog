@@ -1,0 +1,7 @@
+div(ng-repeat='article in articles')
+  h3 {{article.title}}
+  a(href="view/{{article.key}}") Read
+  | -
+  a(href="edit/{{article.key}}") Edit
+  | -
+  a(href="delete/{{article.key}}") Delete
